@@ -7,8 +7,10 @@ Welcome to the Airbnb Price Estimator, a machine learning-powered web applicatio
 This project uses real Airbnb data to train a model that helps estimate the nightly price of listings based on features like location, availability, number of reviews, and proximity to famous landmarks. The application is built with Streamlit and deployed for public use.
 
 Live App: [https://ca-airbnb-price-estimator.streamlit.app]
+
 GitHub Repo: [https://github.com/Niharika-Rawat/airbnb_price_estimator]
-Dataset Source: 
+
+Dataset Source: [https://insideairbnb.com/get-the-data/]
 
 ### Features
 
