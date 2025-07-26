@@ -1,12 +1,7 @@
 pandas
-os
 numpy
 xgboost
 scikit-learn
-subprocess
-sys
 scikit-optimize
 matplotlib
-pickle
 streamlit
-time
