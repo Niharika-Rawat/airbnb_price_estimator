@@ -28,3 +28,5 @@ Dataset Source: [https://insideairbnb.com/get-the-data/]
 * Pandas & NumPy – data manipulation
 * Scikit-Learn – preprocessing and model evaluation
 * Scikit-Optimize – model tuning
+
+<img width="1470" height="734" alt="Screenshot 2025-07-29 at 3 34 08 PM" src="https://github.com/user-attachments/assets/3f32c7a7-c640-472d-b862-2cda51b5d34d" />
