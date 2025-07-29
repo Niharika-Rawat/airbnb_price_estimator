@@ -156,6 +156,67 @@ def user_input_features():
 
 input_df = user_input_features()
 
+def summary():
+    summary_data = {}
+    
+    summary_data['Availability (days/year)'] = int(input_df['availability_365'].iloc[0])
+    summary_data['Listings per Host'] = int(input_df['listings_per_host'].iloc[0])
+    summary_data['Avg Reviews per Host'] = int(input_df['avg_reviews_per_host'].iloc[0])
+    summary_data['Airbnb Density'] = int(input_df['neighbourhood_freq'].iloc[0])
+    
+    room_types = ['Entire home/apt', 'Hotel room', 'Private room', 'Shared room']
+    for room_type in room_types:
+        if f'room_type_{room_type}' in input_df.columns and input_df[f'room_type_{room_type}'].iloc[0] == 1:
+            summary_data['Room Type'] = room_type
+            break
+    
+    min_nights_map = {
+        'min_nights_group_upto_3_days': 'Up to 3 days',
+        'min_nights_group_upto_10_days': 'Up to 10 days',
+        'min_nights_group_upto_3_months': 'Up to 3 months',
+        'min_nights_group_long_term_rental': 'Long term rental'
+    }
+
+    for encoded_name, display_name in min_nights_map.items():
+        if encoded_name in input_df.columns and input_df[encoded_name].iloc[0] == 1:
+            summary_data['Minimum Nights'] = display_name
+            break
+    
+    city_map = {
+        'city_los angeles': 'Los Angeles',
+        'city_oakland': 'Oakland',
+        'city_pacific grove': 'Pacific Grove',
+        'city_san diego': 'San Diego',
+        'city_san francisco': 'San Francisco',
+        'city_san mateo county': 'San Mateo County',
+        'city_santa clara county': 'Santa Clara County',
+        'city_santa cruz county': 'Santa Cruz County'
+    }
+
+    for encoded_name, display_name in city_map.items():
+        if encoded_name in input_df.columns and input_df[encoded_name].iloc[0] == 1:
+            summary_data['City'] = display_name
+            break
+    
+    selected_neighbourhoods = []
+    for col in input_df.columns:
+        if col.startswith('neighbourhood_') and input_df[col].iloc[0] == 1:
+            neighbourhood_name = col.replace('neighbourhood_', '').replace('_', ' ')
+            selected_neighbourhoods.append(neighbourhood_name)
+    if selected_neighbourhoods:
+        summary_data['Neighbourhoods'] = ', '.join(selected_neighbourhoods)
+    
+    for col in input_df.columns:
+        if col.startswith('dist_to_') and input_df[col].iloc[0] > 0:
+            landmark = col.replace('dist_to_', '').replace('(in kms)', '').replace('_', ' ')
+            distance = input_df[col].iloc[0]
+            summary_data[f'Distance to {landmark}'] = f'{distance:.1f} km'
+            break
+    
+    return summary_data
+
+user_summary = summary()
+
 st.markdown(
     """
     <div style="display: flex; align-items: center; gap: 15px; justify-content: flex-start;">
@@ -167,7 +228,9 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.dataframe(input_df)
+
+summary_df = pd.DataFrame(list(user_summary.items()), columns=['Feature', 'Value'])
+st.dataframe(summary_df, use_container_width=True, hide_index=True)
 
 selected_neighbourhoods = []
 for col in input_df.columns:
